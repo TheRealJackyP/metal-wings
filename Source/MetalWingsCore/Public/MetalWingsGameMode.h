@@ -13,5 +13,4 @@ UCLASS()
 class METALWINGSCORE_API AMetalWingsGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
