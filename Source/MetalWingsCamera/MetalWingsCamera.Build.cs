@@ -6,6 +6,6 @@ public class MetalWingsCamera : ModuleRules
 	{
 		//PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new[] {"Core", "CoreUObject", "Engine"});
+		PublicDependencyModuleNames.AddRange(new[] {"Core", "CoreUObject", "Engine", "GameplayAbilities", "GameplayAbilitiesEditor", "GameplayTasks", "GameplayTasksEditor", "GameplayTags", "EnhancedInput"});
 	}
 }

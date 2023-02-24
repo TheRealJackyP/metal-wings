@@ -18,8 +18,11 @@ public class metal_wings : ModuleRules
 				"MetalWingsCore",
 				"MetalWingsCamera",
 				"GameplayAbilities",
+				"GameplayAbilitiesEditor",
 				"GameplayTags",
-				"GameplayTasks"
+				"GameplayTagsEditor",
+				"GameplayTasks",
+				"GameplayTasksEditor",
 			});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
