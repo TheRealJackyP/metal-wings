@@ -17,12 +17,12 @@ FVector UFreeCameraMovementComponent::ComputeMoveDelta(const FVector& InVelocity
 	{
 		Velocity = ComputeAcceleration(InVelocity, DeltaTime);
 	}
-	
+
 	return Velocity * DeltaTime;
 }
 
 FVector UFreeCameraMovementComponent::ComputeAcceleration(const FVector& InVelocity,
-	float DeltaTime) const
+	float DeltaTime)
 {
 	switch (FreeCameraState)
 	{
@@ -46,14 +46,15 @@ FVector UFreeCameraMovementComponent::ComputeAcceleration(const FVector& InVeloc
 }
 
 FVector UFreeCameraMovementComponent::ComputeActiveAcceleration(
-	const FVector& InVelocity, float DeltaTime) const
+	const FVector& InVelocity, const float DeltaTime)
 {
-	const FVector TargetVelocity = ((ForwardVector * PlayerInputVector.Y) + (RightVector * PlayerInputVector.X)) * MaxSpeed;
-	if(MoveAcceleration == 0)
+	const FVector TargetVelocity = ((ForwardVector * PlayerInputVector.Y) + (RightVector
+		* PlayerInputVector.X)) * MaxSpeed;
+	if (MoveAcceleration == 0)
 	{
 		return TargetVelocity;
 	}
-	if(TargetVelocity.IsNearlyZero())
+	if (TargetVelocity.IsNearlyZero())
 	{
 		return ComputeBrakingAcceleration(InVelocity, DeltaTime);
 	}
@@ -61,40 +62,46 @@ FVector UFreeCameraMovementComponent::ComputeActiveAcceleration(
 	AccelerationDirection.Normalize();
 	const FVector NextVelocity = InVelocity + AccelerationDirection * MoveAcceleration *
 		DeltaTime;
-	return NextVelocity.GetClampedToSize(0, TargetVelocity.IsNearlyZero() ? 0 : TargetVelocity.Length());
+	return NextVelocity.GetClampedToSize(
+		0, TargetVelocity.IsNearlyZero() ? 0 : TargetVelocity.Length());
 }
 
 FVector UFreeCameraMovementComponent::ComputeBrakingAcceleration(
-	const FVector& InVelocity, float DeltaTime) const
+	const FVector& InVelocity, const float DeltaTime)
 {
-	if(BrakingAcceleration == 0)
+	if (BrakingAcceleration == 0)
 	{
 		return FVector(0);
 	}
 	FVector NextVelocity = InVelocity - (InVelocity.GetSafeNormal() *
 		BrakingAcceleration * DeltaTime);
-	
-	if(InVelocity.Length() < BrakingAcceleration * DeltaTime)
+
+	if (InVelocity.Length() < BrakingAcceleration * DeltaTime)
 	{
-		NextVelocity = FVector(0); 
+		NextVelocity = FVector(0);
 	}
-	
-	return NextVelocity.IsNearlyZero() ? FVector(0) : NextVelocity;
+
+	if (NextVelocity.IsNearlyZero())
+	{
+		FreeCameraState = EFreeCameraState::ACTIVE;
+		return FVector(0);
+	}
+	return NextVelocity;
 }
 
-void UFreeCameraMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+void UFreeCameraMovementComponent::TickComponent(const float DeltaTime,
+                                                 const ELevelTick TickType,
                                                  FActorComponentTickFunction*
                                                  ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	const FVector Location = TargetCameraComponent->GetComponentLocation() +
 		ComputeMoveDelta(Velocity, DeltaTime);
-	//FString string = Location.ToCompactString();
 	TargetCameraComponent->SetWorldLocation(Location, true);
 }
 
-void UFreeCameraMovementComponent::StopMovement_Implementation(bool ShouldBrake,
-	bool NoInterrupt)
+void UFreeCameraMovementComponent::StopMovement_Implementation(const bool ShouldBrake,
+	const bool NoInterrupt)
 {
 	if (!ShouldBrake)
 	{
