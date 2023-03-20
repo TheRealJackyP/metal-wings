@@ -8,7 +8,6 @@
 
 class UAbilitySystemComponent;
 
-
 /**
  * @brief An ability task that will poll the input values from a specified Input Action and inject them into a Free Camera Movement component. Exits when a particular Gameplay Event is raised.
  */
