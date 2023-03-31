@@ -9,11 +9,15 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitTickEventDelegate, FGameplayEventData, Payload);
 UCLASS()
 class METALWINGSCORE_API
 	UAbilityTask_TickWhileWaitEvent : public UAbilityTask_WaitGameplayEvent
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
+	UPROPERTY(BlueprintAssignable)
+	FWaitTickEventDelegate Tick;
+	
 	UFUNCTION(BlueprintCallable, Category = "Ability|Tasks|Custom",
 		meta = (HidePin = "OwningAbility", DefaultToSelf = "OwningAbility",
 			BlueprintInternalUseOnly = "TRUE"))
@@ -22,8 +26,5 @@ class METALWINGSCORE_API
 		AActor* TickOptionalExternalTarget = nullptr, bool TickOnlyTriggerOnce = false,
 		bool TickOnlyMatchExact = true);
 public:
-	UPROPERTY(BlueprintAssignable)
-	FWaitGameplayEventDelegate Tick;
-
 	virtual void TickTask(float DeltaTime) override;
 };

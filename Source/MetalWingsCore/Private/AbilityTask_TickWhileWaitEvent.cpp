@@ -2,14 +2,22 @@
 
 
 #include "AbilityTask_TickWhileWaitEvent.h"
+UAbilityTask_TickWhileWaitEvent::UAbilityTask_TickWhileWaitEvent(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	bTickingTask = true;
+}
 
 UAbilityTask_TickWhileWaitEvent* UAbilityTask_TickWhileWaitEvent::TickWhileWaitEvent(
 	UGameplayAbility* OwningAbility, FGameplayTag EventTag,
 	AActor* TickOptionalExternalTarget, bool TickOnlyTriggerOnce, bool TickOnlyMatchExact)
 {
-	UAbilityTask_TickWhileWaitEvent* Instance = Cast<UAbilityTask_TickWhileWaitEvent>(
-		WaitGameplayEvent(OwningAbility, EventTag, TickOptionalExternalTarget, TickOnlyTriggerOnce, TickOnlyMatchExact));
-	return Instance;
+	UAbilityTask_TickWhileWaitEvent* MyObj = NewAbilityTask<UAbilityTask_TickWhileWaitEvent>(OwningAbility);
+	MyObj->Tag = EventTag;
+	MyObj->SetExternalTarget(TickOptionalExternalTarget);
+	MyObj->OnlyTriggerOnce = TickOnlyTriggerOnce;
+	MyObj->OnlyMatchExact = TickOnlyMatchExact;
+	return MyObj;
 }
 
 void UAbilityTask_TickWhileWaitEvent::TickTask(float DeltaTime)
