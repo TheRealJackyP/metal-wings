@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FFreeCameraConfigDataRow.h"
 #include "Abilities/GameplayAbility.h"
 #include "MouseMoveFreeCamera.generated.h"
 
+/**
+ * @brief A gameplay ability representing edge-scrolling camera movement based on the player's mouse position. Only defines methods for calculating the player's intended mouse movement. The actual details of what should happen with this value is left to the blueprint layer. 
+ */
 UCLASS()
 class METALWINGSCAMERA_API UMouseMoveFreeCamera : public UGameplayAbility
 {
@@ -58,6 +62,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,
 		Category = "MouseMoveFreeCamera")
 	FIntPoint CurrentResolution;
+
+	UFUNCTION(BlueprintNativeEvent, Category = "FreeCameraMovementComponent",
+		BlueprintCallable)
+	void InitializeFromConfig(FFreeCameraConfigDataRow ConfigData);
+	/**
+	 * @brief A BP overridable method for initializing this component from a row of configuration data.
+	 * @param ConfigData The row of configuration data containing the values to initialize this component with.
+	 */
+	virtual void InitializeFromConfig_Implementation(FFreeCameraConfigDataRow ConfigData);
 
 private:
 	/**

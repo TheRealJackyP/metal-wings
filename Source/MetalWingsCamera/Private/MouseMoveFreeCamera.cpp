@@ -9,12 +9,15 @@ FVector2D UMouseMoveFreeCamera::CalculateMouseMovement_Implementation()
 	float RawX = 0;
 	float RawY = 0;
 	TargetController->GetMousePosition(RawX, RawY);
-	UE_LOG(LogTemp, Warning, TEXT("The vector value is: %f, %f"), RawX, RawY);
 	const auto NormalizedInput = NormalizeMousePositions(RawX, RawY);
-	UE_LOG(LogTemp, Warning, TEXT("The vector value is: %s"),
-	       *CurrentResolution.ToString());
 	return FVector2D(ConvertAxisMovement(NormalizedInput.X, MovementThreshold.X),
 	                 -ConvertAxisMovement(NormalizedInput.Y, MovementThreshold.Y));
+}
+
+void UMouseMoveFreeCamera::InitializeFromConfig_Implementation(
+	FFreeCameraConfigDataRow ConfigData)
+{
+	MovementThreshold = ConfigData.MouseMovementThreshold;
 }
 
 void UMouseMoveFreeCamera::PreActivate(const FGameplayAbilitySpecHandle Handle,

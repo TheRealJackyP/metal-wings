@@ -23,6 +23,8 @@ public class metal_wings : ModuleRules
 				"GameplayTagsEditor",
 				"GameplayTasks",
 				"GameplayTasksEditor",
+				"DataRegistry",
+				"DataRegistryEditor",
 			});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

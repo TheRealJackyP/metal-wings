@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FFreeCameraConfigDataRow.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/MovementComponent.h"
 #include "FreeCameraMovementComponent.generated.h"
@@ -93,11 +94,21 @@ public:
 		BlueprintCallable)
 	void StopMovement(bool ShouldBrake, bool NoInterrupt);
 	/**
-	 * @brief An BP overridable method for stopping the movement of this component.
+	 * @brief A BP overridable method for stopping the movement of this component.
 	 * @param ShouldBrake If true, will smoothly come to a stop. If false, will immediately stop.
 	 * @param NoInterrupt If true, will continue braking and will ignore further player input. If false, will brake, but will stop braking if player input is received.
 	 */
 	virtual void StopMovement_Implementation(bool ShouldBrake, bool NoInterrupt);
+
+	UFUNCTION(BlueprintNativeEvent, Category = "FreeCameraMovementComponent",
+		BlueprintCallable)
+	void InitializeFromConfig(FFreeCameraConfigDataRow ConfigData);
+	/**
+	 * @brief A BP overridable method for initializing this component from a row of configuration data.
+	 * @param ConfigData The row of configuration data containing the values to initialize this component with. 
+	 */
+	virtual void InitializeFromConfig_Implementation(FFreeCameraConfigDataRow ConfigData);
+	
 	/**
 	 * @brief On the first tick, initialize all private variables. 
 	 */
@@ -111,18 +122,18 @@ public:
 	/**
 	 * @brief The magnitude of the acceleration that should be applied per second to this component's Velocity.
 	 */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MoveAcceleration;
 	/**
 	 * @brief The magnitude of the acceleration that should be applied per second to this component's Velocity when braking.
 	 */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float BrakingAcceleration;
 
 	/**
 	 * @brief The maximum speed of the camera movement.
 	 */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxSpeed;
 
 	/**
@@ -135,13 +146,13 @@ public:
 	/**
 	 * @brief The minimum bounds that the camera can reach. The camera will not move beyond these.
 	 */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector MinBounds;
 
 	/**
 	 * @brief The maximum bounds that the camera can reach. The camera will not move beyond these.
 	 */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector MaxBounds;
 
 	/**

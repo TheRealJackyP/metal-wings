@@ -117,6 +117,16 @@ void UFreeCameraMovementComponent::StopMovement_Implementation(const bool Should
 	FreeCameraState = EFreeCameraState::BRAKING;
 }
 
+void UFreeCameraMovementComponent::InitializeFromConfig_Implementation(
+	FFreeCameraConfigDataRow ConfigData)
+{
+	MoveAcceleration = ConfigData.MoveAcceleration;
+	BrakingAcceleration = ConfigData.BrakingAcceleration;
+	MinBounds = ConfigData.MinBounds;
+	MaxBounds = ConfigData.MaxBounds;
+	MaxSpeed = ConfigData.MaxSpeed;
+}
+
 void UFreeCameraMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
